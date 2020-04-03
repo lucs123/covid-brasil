@@ -3,13 +3,13 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
-from brasil import page_brasil
-from estados import page_estados
-from cidades import page_cidades
+from brasil import page_brasil,card_brasil
+from estados import page_estados,card_estados
+from cidades import page_cidades,card_cidades
 from app import app
 
 links = dbc.Row(justify='end',children=[
-            dbc.Col([dbc.NavItem(dbc.NavLink('Brasil', href='/'))]),
+            dbc.Col([dbc.NavItem(dbc.NavLink('Brasil', href='/brasil'))]),
             dbc.Col([dbc.NavItem(dbc.NavLink('Estados', href='/estados'))]),
             dbc.Col([dbc.NavItem(dbc.NavLink('Municipios', href='/municipios'))]),
 ])
@@ -29,22 +29,23 @@ app.layout = html.Div(children=[
     dbc.Container([
         dbc.Row([
             dbc.Col([html.Div(id='page_layout')]),
-
+            dbc.Col([html.Div(id='card')])
 
         ])        
 ])
 ])
 
-@app.callback(Output('page_layout', 'children'),
+@app.callback([Output('page_layout', 'children'),
+               Output('card','children')], 
               [Input('url', 'pathname')])
 
 def display_page(pathname):
-    if pathname == '/':
-        return page_brasil
+    if pathname == '/brasil':
+        return page_brasil,card_brasil
     elif pathname == '/estados':
-        return page_estados
+        return page_estados,card_estados
     elif pathname == '/municipios':
-        return page_cidades    
+        return page_cidades,card_cidades    
     else:
         return '404'
 

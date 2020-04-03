@@ -1,5 +1,6 @@
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 import pandas as pd
 from dash.dependencies import Input, Output
 from app import app
@@ -8,9 +9,7 @@ from app import app
 br = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv')
 br = br[br.state == 'TOTAL']
 
-total_brasil = br.totalCases.iloc[-1]
-novos_brasil = br.newCases.iloc[-1]
-mortes_brasil = br.deaths.iloc[-1] 
+card_brasil = dbc.Card(id='card_brasil') 
 
 page_brasil = html.Div(children=[
 
@@ -18,13 +17,14 @@ page_brasil = html.Div(children=[
         dcc.Tab(label='Total de casos',value='Total de casos'),
         dcc.Tab(label='Novos casos',value='Novos casos')
     ]),
-    html.H1(total_brasil),
+
     #Casos Brasil
     dcc.Graph(id='graph_brasil')
 ])
 
 @app.callback(
-    Output('graph_brasil','figure'),
+    [Output('graph_brasil','figure'),
+    Output('card_brasil','children')],
     [Input('tabs','value')]
 )
 def update_graph_brasil(filtro):
@@ -33,7 +33,7 @@ def update_graph_brasil(filtro):
         y = br.totalCases
     elif filtro == 'Novos casos':
         y = br.newCases
-    return {
+    figure = {
         'data': [
             {'x': x, 'y': y, 'type': 'line'},
         ],
@@ -41,4 +41,8 @@ def update_graph_brasil(filtro):
                 'title':filtro
             }
     }
+
+    children = [dbc.CardHeader(br.date.iloc[-1]),
+                dbc.CardBody('Total de casos:{}Novos casos{}'.format(br.totalCases.iloc[-1],br.newCases.iloc[-1]))]      
+    return figure,children
     

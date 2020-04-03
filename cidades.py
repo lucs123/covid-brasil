@@ -1,5 +1,6 @@
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 import pandas as pd
 from dash.dependencies import Input, Output
 from app import app
@@ -15,8 +16,7 @@ cities_options = []
 for i in cities_list:
     cities_options.append({'label':i,'value':i})
 
-total_cidade = cities_time.totalCases.iloc[-1]
-novos_cidade = cities_time.newCases.iloc[-1]     
+card_cidades = dbc.Card(id='card_city') 
 
 page_cidades = html.Div(children=[
 
@@ -24,7 +24,7 @@ page_cidades = html.Div(children=[
         dcc.Tab(label='Total de casos',value='Total de casos'),
         dcc.Tab(label='Novos casos',value='Novos casos')
     ]),
-    html.H1([total_cidade]),
+
     dcc.Graph(id='graph_cities'),
 
     dcc.Dropdown(
@@ -35,7 +35,8 @@ page_cidades = html.Div(children=[
 ])
 
 @app.callback(
-    Output('graph_cities','figure'),
+    [Output('graph_cities','figure'),
+    Output('card_city','children')],
     [Input('dropdown_cities','value'),
     Input('tabs','value')]
 )
@@ -46,7 +47,8 @@ def update_graph_city(cidade,filtro):
         y = city_time.totalCases
     elif filtro == 'Novos casos':
         y = city_time.newCases
-    return {
+
+    figure = {
         'data': [
             {'x': x, 'y': y, 'type': 'line'},
         ],
@@ -54,3 +56,8 @@ def update_graph_city(cidade,filtro):
                 'title':filtro +' em '+cidade
             }
     }
+
+    children = [dbc.CardHeader(city_time.date.iloc[-1]),
+                dbc.CardBody('Total de casos:{}\nNovos casos:{}'.format(city_time.totalCases.iloc[-1],
+                city_time.newCases.iloc[-2]))]  
+    return figure,children

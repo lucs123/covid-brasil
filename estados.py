@@ -10,9 +10,6 @@ states_time = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/mas
 only_states = states_time.state != 'TOTAL'
 states_time = states_time[only_states]
 
-total_estado = states_time.totalCases.iloc[-1]
-novos_estado = states_time.newCases.iloc[-1]
-mortes_estado = states_time.deaths.iloc[-1] 
 
 states_list = states_time.state
 states_list = list(states_list.drop_duplicates())
@@ -20,6 +17,7 @@ states_options = []
 for i in states_list:
     states_options.append({'label':i,'value':i})
 
+card_estados =  dbc.Card(id='card_state')  
 #Layout    
 page_estados =  html.Div(children=[
 
@@ -27,16 +25,14 @@ page_estados =  html.Div(children=[
         dcc.Tab(label='Total de casos',value='Total de casos'),
         dcc.Tab(label='Novos casos',value='Novos casos')
     ]),
-    html.H1([total_estado]),
+
     html.Div([
         dcc.Dropdown(
             id='dropdown_states',
             options=states_options,
             value='SP'
         ),
-    ]),
-
-    #dbc.Card(id='card_state'),    
+    ]),  
 
     html.Div([
     dcc.Graph(id='graph_states'),
@@ -44,7 +40,8 @@ page_estados =  html.Div(children=[
 ])
 
 @app.callback(
-    Output('graph_states','figure'),
+    [Output('graph_states','figure'),
+    Output('card_state','children')],
     [Input('dropdown_states','value'),
     Input('tabs','value')]
 )
@@ -65,6 +62,10 @@ def update_graph_state(estado,filtro):
             }
     }
 
-    return figure
+    children = [dbc.CardHeader(state_time.date.iloc[-1]),
+                dbc.CardBody('Total de casos:{}\nNovos casos:{}'.format(state_time.totalCases.iloc[-1],
+                state_time.newCases.iloc[-1]))]
+    
+    return figure,children
 
 
