@@ -15,13 +15,16 @@ cities_options = []
 for i in cities_list:
     cities_options.append({'label':i,'value':i})
 
+total_cidade = cities_time.totalCases.iloc[-1]
+novos_cidade = cities_time.newCases.iloc[-1]     
+
 page_cidades = html.Div(children=[
 
     dcc.Tabs(id='tabs',value='Total de casos',children=[
         dcc.Tab(label='Total de casos',value='Total de casos'),
         dcc.Tab(label='Novos casos',value='Novos casos')
     ]),
-
+    html.H1([total_cidade]),
     dcc.Graph(id='graph_cities'),
 
     dcc.Dropdown(

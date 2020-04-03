@@ -8,6 +8,9 @@ from app import app
 br = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv')
 br = br[br.state == 'TOTAL']
 
+total_brasil = br.totalCases.iloc[-1]
+novos_brasil = br.newCases.iloc[-1]
+mortes_brasil = br.deaths.iloc[-1] 
 
 page_brasil = html.Div(children=[
 
@@ -15,7 +18,7 @@ page_brasil = html.Div(children=[
         dcc.Tab(label='Total de casos',value='Total de casos'),
         dcc.Tab(label='Novos casos',value='Novos casos')
     ]),
-
+    html.H1(total_brasil),
     #Casos Brasil
     dcc.Graph(id='graph_brasil')
 ])

@@ -1,5 +1,6 @@
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 import pandas as pd
 from dash.dependencies import Input, Output
 from app import app
@@ -8,6 +9,10 @@ from app import app
 states_time = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv')
 only_states = states_time.state != 'TOTAL'
 states_time = states_time[only_states]
+
+total_estado = states_time.totalCases.iloc[-1]
+novos_estado = states_time.newCases.iloc[-1]
+mortes_estado = states_time.deaths.iloc[-1] 
 
 states_list = states_time.state
 states_list = list(states_list.drop_duplicates())
@@ -22,14 +27,20 @@ page_estados =  html.Div(children=[
         dcc.Tab(label='Total de casos',value='Total de casos'),
         dcc.Tab(label='Novos casos',value='Novos casos')
     ]),
+    html.H1([total_estado]),
+    html.Div([
+        dcc.Dropdown(
+            id='dropdown_states',
+            options=states_options,
+            value='SP'
+        ),
+    ]),
 
+    #dbc.Card(id='card_state'),    
+
+    html.Div([
     dcc.Graph(id='graph_states'),
-
-    dcc.Dropdown(
-        id='dropdown_states',
-        options=states_options,
-        value='SP'
-    ),
+    ])
 ])
 
 @app.callback(
@@ -44,8 +55,8 @@ def update_graph_state(estado,filtro):
         y = state_time.totalCases
     elif filtro == 'Novos casos':
         y = state_time.newCases
-         
-    return {
+
+    figure = {
         'data': [
             {'x': x, 'y': y, 'type': 'line'},
         ],
@@ -53,3 +64,7 @@ def update_graph_state(estado,filtro):
                 'title':filtro+' em '+estado
             }
     }
+
+    return figure
+
+
