@@ -16,7 +16,12 @@ for i in cities_list:
     cities_options.append({'label':i,'value':i})
 
 page_cidades = html.Div(children=[
-    #Casos Cidades
+
+    dcc.Tabs(id='tabs',value='Total de casos',children=[
+        dcc.Tab(label='Total de casos',value='Total de casos'),
+        dcc.Tab(label='Novos casos',value='Novos casos')
+    ]),
+
     dcc.Graph(id='graph_cities'),
 
     dcc.Dropdown(
@@ -28,17 +33,21 @@ page_cidades = html.Div(children=[
 
 @app.callback(
     Output('graph_cities','figure'),
-    [Input('dropdown_cities','value'),]
+    [Input('dropdown_cities','value'),
+    Input('tabs','value')]
 )
-def update_graph_city(cidade):
+def update_graph_city(cidade,filtro):
     city_time = cities_time[cities_time.city == cidade] 
     x = city_time.date
-    y = city_time.totalCases
+    if filtro == 'Total de casos':
+        y = city_time.totalCases
+    elif filtro == 'Novos casos':
+        y = city_time.newCases
     return {
         'data': [
-            {'x': x, 'y': y, 'type': 'line', 'name': 'SF'},
+            {'x': x, 'y': y, 'type': 'line'},
         ],
         'layout': {
-            'title': 'Casos confirmados em ' + cidade
+                'title':filtro +' em '+cidade
             }
     }

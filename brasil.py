@@ -11,13 +11,31 @@ br = br[br.state == 'TOTAL']
 
 page_brasil = html.Div(children=[
 
+    dcc.Tabs(id='tabs',value='Total de casos',children=[
+        dcc.Tab(label='Total de casos',value='Total de casos'),
+        dcc.Tab(label='Novos casos',value='Novos casos')
+    ]),
+
     #Casos Brasil
-    dcc.Graph(id='graph_brasil',
-        figure = {
+    dcc.Graph(id='graph_brasil')
+])
+
+@app.callback(
+    Output('graph_brasil','figure'),
+    [Input('tabs','value')]
+)
+def update_graph_brasil(filtro):
+    x = br.date
+    if filtro == 'Total de casos':
+        y = br.totalCases
+    elif filtro == 'Novos casos':
+        y = br.newCases
+    return {
         'data': [
-            {'x': br.date, 'y': br.totalCases, 'type': 'line', 'name': 'SF'},
+            {'x': x, 'y': y, 'type': 'line'},
         ],
         'layout': {
-            'title': 'Casos confirmados Brasil'
-            }}),
-])            
+                'title':filtro
+            }
+    }
+    

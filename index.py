@@ -2,21 +2,22 @@
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import pandas as pd
 from brasil import page_brasil
 from estados import page_estados
 from cidades import page_cidades
 from app import app
 
-app.layout = html.Div(id='page_layout',children=[
+app.layout = html.Div(children=[
     dcc.Location(id='url'),
-    html.H1(children='Hello Dash'),
+    html.H1(children='Covid no Brasil'),
 
     dcc.Link('Casos Brasil', href='/'),
     html.Br(),
     dcc.Link('Casos por estado', href='/estados'),
     html.Br(),
     dcc.Link('Casos por cidade', href='/cidades'),
+
+    html.Div(id='page_layout')
 ])
 
 @app.callback(Output('page_layout', 'children'),

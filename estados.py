@@ -15,8 +15,14 @@ states_options = []
 for i in states_list:
     states_options.append({'label':i,'value':i})
 
-page_estados =  html.Div(children=[   
-    #Casos Estados
+#Layout    
+page_estados =  html.Div(children=[
+
+    dcc.Tabs(id='tabs',value='Total de casos',children=[
+        dcc.Tab(label='Total de casos',value='Total de casos'),
+        dcc.Tab(label='Novos casos',value='Novos casos')
+    ]),
+
     dcc.Graph(id='graph_states'),
 
     dcc.Dropdown(
@@ -28,17 +34,22 @@ page_estados =  html.Div(children=[
 
 @app.callback(
     Output('graph_states','figure'),
-    [Input('dropdown_states','value'),]
+    [Input('dropdown_states','value'),
+    Input('tabs','value')]
 )
-def update_graph_state(estado):
+def update_graph_state(estado,filtro):
     state_time = states_time[states_time.state == estado] 
     x = state_time.date
-    y = state_time.totalCases
+    if filtro == 'Total de casos':
+        y = state_time.totalCases
+    elif filtro == 'Novos casos':
+        y = state_time.newCases
+         
     return {
         'data': [
-            {'x': x, 'y': y, 'type': 'line', 'name': 'SF'},
+            {'x': x, 'y': y, 'type': 'line'},
         ],
         'layout': {
-            'title': 'Casos confirmados em ' + estado
+                'title':filtro+' em '+estado
             }
     }
