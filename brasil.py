@@ -1,6 +1,7 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
+import datetime
 import pandas as pd
 from dash.dependencies import Input, Output
 from app import app
@@ -13,7 +14,7 @@ card_brasil = dbc.Card(id='card_brasil')
 
 page_brasil = html.Div(children=[
 
-    dcc.Tabs(id='tabs',value='Total de casos',children=[
+    dcc.Tabs(id='tabs_brasil',value='Total de casos',children=[
         dcc.Tab(label='Total de casos',value='Total de casos'),
         dcc.Tab(label='Novos casos',value='Novos casos')
     ]),
@@ -25,7 +26,7 @@ page_brasil = html.Div(children=[
 @app.callback(
     [Output('graph_brasil','figure'),
     Output('card_brasil','children')],
-    [Input('tabs','value')]
+    [Input('tabs_brasil','value')]
 )
 def update_graph_brasil(filtro):
     x = br.date
@@ -42,7 +43,8 @@ def update_graph_brasil(filtro):
             }
     }
 
-    children = [dbc.CardHeader(br.date.iloc[-1]),
+    date = datetime.datetime.strptime(br.date.iloc[-1], '%Y-%m-%d').strftime('%d/%m/%y')
+    children = [dbc.CardHeader('Data:'+date),
                 dbc.CardBody('Total de casos:{}Novos casos{}'.format(br.totalCases.iloc[-1],br.newCases.iloc[-1]))]      
     return figure,children
-    
+    #br.date.iloc[-1]

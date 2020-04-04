@@ -1,6 +1,7 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
+import datetime
 import pandas as pd
 from dash.dependencies import Input, Output
 from app import app
@@ -17,22 +18,22 @@ states_options = []
 for i in states_list:
     states_options.append({'label':i,'value':i})
 
-card_estados =  dbc.Card(id='card_state')  
-#Layout    
-page_estados =  html.Div(children=[
+card_estados =  dbc.Card(id='card_state')
 
-    dcc.Tabs(id='tabs',value='Total de casos',children=[
-        dcc.Tab(label='Total de casos',value='Total de casos'),
-        dcc.Tab(label='Novos casos',value='Novos casos')
-    ]),
-
-    html.Div([
+menu_estados = html.Div([
         dcc.Dropdown(
             id='dropdown_states',
             options=states_options,
             value='SP'
         ),
-    ]),  
+    ]), 
+#Layout    
+page_estados =  html.Div(children=[
+
+    dcc.Tabs(id='tabs_estados',value='Total de casos',children=[
+        dcc.Tab(label='Total de casos',value='Total de casos'),
+        dcc.Tab(label='Novos casos',value='Novos casos')
+    ]), 
 
     html.Div([
     dcc.Graph(id='graph_states'),
@@ -43,7 +44,7 @@ page_estados =  html.Div(children=[
     [Output('graph_states','figure'),
     Output('card_state','children')],
     [Input('dropdown_states','value'),
-    Input('tabs','value')]
+    Input('tabs_estados','value')]
 )
 def update_graph_state(estado,filtro):
     state_time = states_time[states_time.state == estado] 
@@ -62,7 +63,8 @@ def update_graph_state(estado,filtro):
             }
     }
 
-    children = [dbc.CardHeader(state_time.date.iloc[-1]),
+    date = datetime.datetime.strptime(state_time.date.iloc[-1], '%Y-%m-%d').strftime('%d/%m/%y')
+    children = [dbc.CardHeader('Data:'+date),
                 dbc.CardBody('Total de casos:{}\nNovos casos:{}'.format(state_time.totalCases.iloc[-1],
                 state_time.newCases.iloc[-1]))]
     
