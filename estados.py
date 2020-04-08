@@ -10,6 +10,8 @@ from app import app
 states_time = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv')
 only_states = states_time.state != 'TOTAL'
 states_time = states_time[only_states]
+not_zero = states_time.newCases > 0
+states_time = states_time[not_zero]
 
 
 states_list = states_time.state
@@ -20,13 +22,17 @@ for i in states_list:
 
 card_estados =  dbc.Card(id='card_state')
 
-menu_estados = html.Div([
-        dcc.Dropdown(
-            id='dropdown_states',
-            options=states_options,
-            value='SP'
-        ),
-    ]), 
+menu_estados = dbc.Card([
+        dbc.CardHeader('Estado'),
+        dbc.CardBody(
+            dcc.Dropdown(
+                id='dropdown_states',
+                options=states_options,
+                value='SP'
+            ),
+        )
+    ])        
+
 #Layout    
 page_estados =  html.Div(children=[
 

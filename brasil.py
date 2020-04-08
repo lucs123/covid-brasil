@@ -45,6 +45,6 @@ def update_graph_brasil(filtro):
 
     date = datetime.datetime.strptime(br.date.iloc[-1], '%Y-%m-%d').strftime('%d/%m/%y')
     children = [dbc.CardHeader('Data:'+date),
-                dbc.CardBody('Total de casos:{}Novos casos{}'.format(br.totalCases.iloc[-1],br.newCases.iloc[-1]))]      
+                dbc.CardBody('Total de casos:{}\nNovos casos:{}'.format(br.totalCases.iloc[-1],br.newCases.iloc[-1]))]      
     return figure,children
-    #br.date.iloc[-1]
+ 

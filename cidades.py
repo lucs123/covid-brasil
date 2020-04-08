@@ -8,8 +8,10 @@ from app import app
 
 #Dadaset Cidades
 cities_time = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-cities-time.csv')
-only_cities = cities_time.city != 'TOTAL'    
+only_cities = cities_time.city != 'TOTAL'     
 cities_time = cities_time[only_cities]
+not_zero = cities_time.newCases > 0
+cities_time = cities_time[not_zero]
 
 cities_list = cities_time.city
 cities_list = list(cities_list.drop_duplicates())
@@ -19,11 +21,16 @@ for i in cities_list:
 
 card_cidades = dbc.Card(id='card_city')
 
-menu_cidades = dcc.Dropdown(
-        id='dropdown_cities',
-        options=cities_options,
-        value='São Paulo/SP'
-    ),
+menu_cidades = dbc.Card([
+        dbc.CardHeader('Cidade'),
+        dbc.CardBody(
+            dcc.Dropdown(
+                id='dropdown_cities',
+                options=cities_options,
+                value='São Paulo/SP'
+            ),
+        )
+    ])     
 
 page_cidades = html.Div(children=[
 
@@ -62,5 +69,5 @@ def update_graph_city(cidade,filtro):
     date = datetime.datetime.strptime(city_time.date.iloc[-1], '%Y-%m-%d').strftime('%d/%m/%y')
     children = [dbc.CardHeader('Data:'+date),
                 dbc.CardBody('Total de casos:{}\nNovos casos:{}'.format(city_time.totalCases.iloc[-1],
-                city_time.newCases.iloc[-2]))]  
+                city_time.newCases.iloc[-1]))]  
     return figure,children
