@@ -6,12 +6,16 @@ import dash_bootstrap_components as dbc
 from brasil import page_brasil,card_brasil
 from estados import page_estados,card_estados,menu_estados
 from cidades import page_cidades,card_cidades,menu_cidades
-from mapa import mapa
+from mapa import map_layout
 from app import app
 
-links = dbc.Row(justify='end',children=[
-            dbc.Col([dbc.NavItem(dbc.NavLink('Mapa', href='/'))]),
-            dbc.Col([dbc.NavItem(dbc.NavLink('Timeline', href='/timeline'))]),
+navbar_style = {
+    'background-color':'#2E3440',
+}
+
+links = dbc.Row(children=[
+            dbc.Col(dbc.NavLink('Mapa', href='/')),
+            dbc.Col(dbc.NavLink('Timeline', href='/timeline')),
 ])
 
 navbar = dbc.Navbar(children=[
@@ -20,13 +24,9 @@ navbar = dbc.Navbar(children=[
     ]),
     dbc.NavbarToggler(id="navbar-toggler"),
     dbc.Collapse(links, id="navbar-collapse", navbar=True),
-])
+], color="dark",dark = True)
 
-#Layout
-app.layout = html.Div(children=[
-    dcc.Location(id='url'),
-    html.Div(children=navbar),
-    dbc.Container([
+graph_layout = [
         html.Br(),
         dbc.Card([
             dbc.CardHeader('CASOS BRASIL'),
@@ -57,10 +57,26 @@ app.layout = html.Div(children=[
                     dbc.Col([html.Div(menu_cidades),html.Br(),html.Div(card_cidades)])
                 ])
             )    
-        ]),
+        ])
+    ]    
+#Layout
+app.layout = html.Div(children=[
+    dcc.Location(id='url'),
+    html.Div(children=navbar),
+    dbc.Container(id='content'),
         html.Br()                
     ])         
-])
+
+
+@app.callback(
+    Output('content','children'),
+    [Input('url','pathname')]
+)
+def update_content(url):
+    if url == '/':
+        return map_layout
+    elif url == '/timeline':
+        return graph_layout
 
 # add callback for toggling the collapse on small screens
 @app.callback(
