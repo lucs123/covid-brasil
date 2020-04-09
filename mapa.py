@@ -4,10 +4,9 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 import dash_table
-from app import app
 import pandas as pd
 import plotly.express as px
-from brasil import percentage
+
 
 gps_df = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/gps_cities.csv')
 df_br = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-total.csv')
@@ -72,5 +71,5 @@ map_layout = html.Div(children=[
     ])
 ])
 
-card_main = dbc.Card(id='card')
+
 

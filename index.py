@@ -23,38 +23,39 @@ navbar = dbc.Navbar(children=[
     dbc.Collapse(links, id="navbar-collapse", navbar=True),
 ], color="dark",dark = True,className='col-md-12')
 
-graph_layout = [
-        dbc.Card([
-            dbc.CardHeader('CASOS BRASIL'),
-            dbc.CardBody(
-                dbc.Row([
-                    dbc.Col([html.Div(page_brasil)],md=8),
-                    dbc.Col([html.Div(card_brasil)])
-                ]),
-            )    
-        ]),
-        html.Br(),
-        dbc.Card([
-            dbc.CardHeader('CASOS POR ESTADO'),
-            dbc.CardBody(
-                dbc.Row([
-                    dbc.Col([html.Div(page_estados)],md=8),
-                    dbc.Col([html.Div(menu_estados),html.Br(),html.Div(card_estados)])
+graph_layout = dcc.Tabs([
+        dcc.Tab([
+            dbc.Card([
+                dbc.CardBody(
+                    dbc.Row([
+                        dbc.Col([html.Div(page_brasil)],md=8),
+                        dbc.Col([html.Div(card_brasil)])
+                    ]),
+                )    
+            ])
+        ],label='Brasil'),
+        dcc.Tab([
+            dbc.Card([
+                dbc.CardBody(
+                    dbc.Row([
+                        dbc.Col([html.Div(page_estados)],md=8),
+                        dbc.Col([html.Div(menu_estados),html.Br(),html.Div(card_estados)])
 
-                ]),
-            )    
-        ]),
-        html.Br(),
-        dbc.Card([
-            dbc.CardHeader('CASOS POR CIDADE'),
-            dbc.CardBody(
-                dbc.Row([
-                    dbc.Col([html.Div(page_cidades)],md=8),
-                    dbc.Col([html.Div(menu_cidades),html.Br(),html.Div(card_cidades)])
-                ])
-            )    
-        ])
-    ]    
+                    ]),
+                )    
+            ])
+        ],label='Estados'),
+        dcc.Tab([
+            dbc.Card([
+                dbc.CardBody(
+                    dbc.Row([
+                        dbc.Col([html.Div(page_cidades)],md=8),
+                        dbc.Col([html.Div(menu_cidades),html.Br(),html.Div(card_cidades)])
+                    ])
+                )    
+            ])
+        ],label='Cidades')    
+    ])    
 #Layout
 app.layout = html.Div(children=[
     dcc.Location(id='url'),
