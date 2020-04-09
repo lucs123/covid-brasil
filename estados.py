@@ -38,11 +38,12 @@ page_estados =  html.Div(children=[
 
     dcc.Tabs(id='tabs_estados',value='Total de casos',children=[
         dcc.Tab(label='Total de casos',value='Total de casos'),
-        dcc.Tab(label='Novos casos',value='Novos casos')
+        dcc.Tab(label='Novos casos',value='Novos casos'),
+        dcc.Tab(label='Casos Fatais',value='Óbitos')
     ]), 
 
-    html.Div([
-    dcc.Graph(id='graph_states'),
+    dbc.Card([
+        dcc.Graph(id='graph_states'),
     ])
 ])
 
@@ -59,7 +60,8 @@ def update_graph_state(estado,filtro):
         y = state_time.totalCases
     elif filtro == 'Novos casos':
         y = state_time.newCases
-
+    elif filtro == 'Óbitos':
+        y = state_time.deaths  
     figure = {
         'data': [
             {'x': x, 'y': y, 'type': 'line'},

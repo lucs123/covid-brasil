@@ -9,9 +9,6 @@ from cidades import page_cidades,card_cidades,menu_cidades
 from mapa import map_layout
 from app import app
 
-navbar_style = {
-    'background-color':'#2E3440',
-}
 
 links = dbc.Row(children=[
             dbc.Col(dbc.NavLink('Mapa', href='/')),
@@ -24,10 +21,9 @@ navbar = dbc.Navbar(children=[
     ]),
     dbc.NavbarToggler(id="navbar-toggler"),
     dbc.Collapse(links, id="navbar-collapse", navbar=True),
-], color="dark",dark = True)
+], color="dark",dark = True,className='col-md-12')
 
 graph_layout = [
-        html.Br(),
         dbc.Card([
             dbc.CardHeader('CASOS BRASIL'),
             dbc.CardBody(
@@ -63,7 +59,8 @@ graph_layout = [
 app.layout = html.Div(children=[
     dcc.Location(id='url'),
     html.Div(children=navbar),
-    dbc.Container(id='content'),
+    html.Br(),
+    dbc.Container(id='content',fluid=True),
         html.Br()                
     ])         
 

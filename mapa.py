@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
+import dash_table
 from app import app
 import pandas as pd
 import plotly.express as px
@@ -27,14 +28,14 @@ fig.update_layout(mapbox_style="carto-positron")
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 map_layout = html.Div(children=[
-    dbc.Card(
+    dbc.Card([
         dbc.Row([
+            html.Br(),
             dbc.Col([
                 dbc.Card([
                     dbc.CardHeader('MAPA'),
                     dbc.CardBody(dbc.Col([dcc.Graph(figure=fig)])),
-                ])
-                ],md=8),
+                ])],md=8),
             dbc.Col([
                 dbc.Card([
                     dbc.CardHeader('CASOS'),
@@ -42,11 +43,27 @@ map_layout = html.Div(children=[
                 ]),
                 html.Br(),
                 dbc.Card(
-                    dbc.Table.from_dataframe(df_table, striped=True, bordered=True, hover=True, size='sm',responsive='sm')
+                    dash_table.DataTable(
+                        id='table',
+                        columns=[{"name": i, "id": i} for i in df_table.columns],
+                        data=df_table.to_dict('records'),
+                        style_table={
+                            'maxHeight': '500px',
+                            'overflowY': 'scroll'
+                        },
+                        style_data_conditional=[
+                            {
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(248, 248, 248)'
+                            }
+                        ],
+                        style_cell={'textAlign': 'center'},
+                    )
                 )      
-            ])
-        ])    
-    )
+            ]),
+            html.Br()
+        ],justify='around')    
+    ])
 ])
 
 card_main = dbc.Card(id='card')

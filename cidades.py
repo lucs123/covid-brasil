@@ -36,10 +36,13 @@ page_cidades = html.Div(children=[
 
     dcc.Tabs(id='tabs_cidades',value='Total de casos',children=[
         dcc.Tab(label='Total de casos',value='Total de casos'),
-        dcc.Tab(label='Novos casos',value='Novos casos')
+        dcc.Tab(label='Novos casos',value='Novos casos'),
+        dcc.Tab(label='Casos Fatais',value='Óbitos')
     ]),
 
-    dcc.Graph(id='graph_cities'),
+    dbc.Card(
+        dcc.Graph(id='graph_cities'),
+    )
 
 ])
 
@@ -56,6 +59,8 @@ def update_graph_city(cidade,filtro):
         y = city_time.totalCases
     elif filtro == 'Novos casos':
         y = city_time.newCases
+    elif filtro == 'Óbitos':
+        y = city_time.deaths             
 
     figure = {
         'data': [
