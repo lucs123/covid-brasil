@@ -58,7 +58,7 @@ def update_graph_brasil(filtro):
 
     date = datetime.datetime.strptime(br.date.iloc[-1], '%Y-%m-%d').strftime('%d/%m/%y')
     children = [dbc.CardHeader(
-                    html.H3(['Data:'+date],
+                    html.H5(['Data:'+date],
                         style={'color': '#666666'}            
                     )
                 ),
@@ -72,3 +72,4 @@ def update_graph_brasil(filtro):
                 ])
                 ]      
     return figure,children
+

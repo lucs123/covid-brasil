@@ -5,6 +5,7 @@ import datetime
 import pandas as pd
 from dash.dependencies import Input, Output
 from app import app
+from brasil import percentage
 
 #Dadaset Estados
 states_time = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv')
@@ -72,9 +73,20 @@ def update_graph_state(estado,filtro):
     }
 
     date = datetime.datetime.strptime(state_time.date.iloc[-1], '%Y-%m-%d').strftime('%d/%m/%y')
-    children = [dbc.CardHeader('Data:'+date),
-                dbc.CardBody('Total de casos:{}\nNovos casos:{}'.format(state_time.totalCases.iloc[-1],
-                state_time.newCases.iloc[-1]))]
+    children = [dbc.CardHeader(
+                    html.H5(['Data:'+date],
+                        style={'color': '#666666'}            
+                    )
+                ),
+                dbc.CardBody([
+                    html.H5([f'Total de casos:{state_time.totalCases.iloc[-1]} {percentage(state_time.totalCases.iloc[-1],state_time.totalCases.iloc[-2])}'],
+                        style={'color': '#666666'}),
+                    html.H6([f'Novos casos:{state_time.newCases.iloc[-1]} {percentage(state_time.newCases.iloc[-1],state_time.newCases.iloc[-2])}'],
+                        style={'color': '#666666'}),
+                    html.H6([f'Casos fatais:{state_time.deaths.iloc[-1]} {percentage(state_time.deaths.iloc[-1],state_time.deaths.iloc[-2])}'],
+                        style={'color': '#666666'})                        
+                ])
+                ] 
     
     return figure,children
 
