@@ -7,6 +7,7 @@ import dash_table
 from app import app
 import pandas as pd
 import plotly.express as px
+from brasil import percentage
 
 gps_df = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/gps_cities.csv')
 df_br = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-total.csv')
@@ -39,7 +40,12 @@ map_layout = html.Div(children=[
             dbc.Col([
                 dbc.Card([
                     dbc.CardHeader('CASOS'),
-                    dbc.CardBody(f'Confimados:{df_br.totalCases.iloc[0]}\nÓbitos:{df_br.deaths.iloc[0]}'),
+                    dbc.CardBody([
+                        html.H5([f'Total de casos:{df_br.totalCases.iloc[0]}'],
+                            style={'color': '#666666'}),
+                        html.H6([f'Casos fatais:{df_br.deaths.iloc[0]}'],
+                            style={'color': '#666666'})                        
+                ]),
                 ]),
                 html.Br(),
                 dbc.Card(
