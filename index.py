@@ -23,18 +23,19 @@ navbar = dbc.Navbar(children=[
     dbc.Collapse(links, id="navbar-collapse", navbar=True),
 ], color="dark",dark = True,className='col-md-12')
 
-graph_layout = dcc.Tabs([
-        dcc.Tab([
+graph_layout = html.Div([
             dbc.Card([
-                dbc.CardBody(
+                dbc.CardBody([
+                    html.H2('Casos Brasil'),
+                    html.Br(),
                     dbc.Row([
                         dbc.Col([html.Div(page_brasil)],md=8),
                         dbc.Col([html.Div(card_brasil)])
                     ]),
-                )    
-            ])
-        ],label='Brasil'),
-        dcc.Tab([
+                ])    
+        ]),
+        html.Br(),
+        html.Div([
             dbc.Card([
                 dbc.CardBody([
                     html.H2('Casos por estado'),
@@ -46,18 +47,21 @@ graph_layout = dcc.Tabs([
                     ]),
                 ])    
             ])
-        ],label='Estados'),
-        dcc.Tab([
+        ]),
+        html.Br(),
+        html.Div([
             dbc.Card([
-                dbc.CardBody(
+                dbc.CardBody([
+                    html.H2('Casos por cidade'),
+                    html.Br(),
                     dbc.Row([
                         dbc.Col([html.Div(page_cidades)],md=8),
                         dbc.Col([html.Div(menu_cidades),html.Br(),html.Div(card_cidades)])
                     ])
-                )    
+                ])    
             ])
-        ],label='Cidades')    
-    ],parent_className='tabs',)
+        ])    
+  ])  
 
 footer = dbc.Row([
     dbc.Col(
