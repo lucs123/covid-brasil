@@ -36,13 +36,15 @@ graph_layout = dcc.Tabs([
         ],label='Brasil'),
         dcc.Tab([
             dbc.Card([
-                dbc.CardBody(
+                dbc.CardBody([
+                    html.H2('Casos por estado'),
+                    html.Br(),
                     dbc.Row([
                         dbc.Col([html.Div(page_estados)],md=8),
                         dbc.Col([html.Div(menu_estados),html.Br(),html.Div(card_estados)])
 
                     ]),
-                )    
+                ])    
             ])
         ],label='Estados'),
         dcc.Tab([
@@ -55,7 +57,7 @@ graph_layout = dcc.Tabs([
                 )    
             ])
         ],label='Cidades')    
-    ])
+    ],parent_className='tabs',)
 
 footer = dbc.Row([
     dbc.Col(
@@ -71,7 +73,7 @@ footer = dbc.Row([
 #Layout
 app.layout = html.Div(children=[
     dcc.Location(id='url'),
-    html.Div(children=navbar),
+    html.Header(children=navbar),
     html.Br(),
     dbc.Container(id='content',fluid=True),
     html.Br(),
