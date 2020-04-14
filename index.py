@@ -9,7 +9,10 @@ from cidades import page_cidades,card_cidades,menu_cidades
 from mapa import map_layout
 from app import app
 
-
+card_style = {
+    'border-radius':'5px',
+    'box-shadow': '2px 2px 2px lightgrey'
+}
 links = dbc.Row(children=[
             dbc.Col(dbc.NavLink('Mapa', href='/',style={'color':'#fff'})),
             dbc.Col(dbc.NavLink('Timeline', href='/timeline',style={'color':'#fff'})),
@@ -33,7 +36,7 @@ graph_layout = html.Div([
                         dbc.Col([html.Div(card_brasil)])
                     ]),
                 ])    
-        ]),
+        ],style=card_style),
         html.Br(),
         html.Div([
             dbc.Card([
@@ -47,7 +50,7 @@ graph_layout = html.Div([
                     ]),
                 ])    
             ])
-        ]),
+        ],style=card_style),
         html.Br(),
         html.Div([
             dbc.Card([
@@ -59,7 +62,7 @@ graph_layout = html.Div([
                         dbc.Col([html.Div(menu_cidades),html.Br(),html.Div(card_cidades)])
                     ])
                 ])    
-            ])
+            ],style=card_style)
         ])    
   ])  
 
