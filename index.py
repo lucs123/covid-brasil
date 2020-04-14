@@ -11,9 +11,9 @@ from app import app
 
 
 links = dbc.Row(children=[
-            dbc.Col(dbc.NavLink('Mapa', href='/')),
-            dbc.Col(dbc.NavLink('Timeline', href='/timeline')),
-])
+            dbc.Col(dbc.NavLink('Mapa', href='/',style={'color':'#fff'})),
+            dbc.Col(dbc.NavLink('Timeline', href='/timeline',style={'color':'#fff'})),
+],)
 
 navbar = dbc.Navbar(children=[
     dbc.Row([
@@ -55,14 +55,28 @@ graph_layout = dcc.Tabs([
                 )    
             ])
         ],label='Cidades')    
-    ])    
+    ])
+
+footer = dbc.Row([
+    dbc.Col(
+        dcc.Markdown('''
+        ### Fonte de dados
+        Foram utilizados dados do repositorio:[https://wcota.me/covid19br]
+        onde casos e óbitos confirmados por dia utilizam informação oficial do Ministério da Saúde, 
+        dados no nível municipal vem do [Brasil.IO](https://brasil.io/dataset/covid19/caso) 
+        e dados mais recentes são reportados pela equipe do [@CoronavirusBrasil](https://twitter.com/CoronavirusBra1).
+        ''')
+    )
+])        
 #Layout
 app.layout = html.Div(children=[
     dcc.Location(id='url'),
     html.Div(children=navbar),
     html.Br(),
     dbc.Container(id='content',fluid=True),
-        html.Br()                
+    html.Br(),
+    html.Hr(),
+    dbc.Container(footer)                    
     ])         
 
 

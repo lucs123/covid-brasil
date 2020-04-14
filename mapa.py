@@ -6,6 +6,7 @@ import dash_bootstrap_components as dbc
 import dash_table
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
 
 gps_df = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/gps_cities.csv')
@@ -20,11 +21,34 @@ result = result.rename(columns={'totalCases':'Confirmados','deaths':'Mortes'})
 
 df_table = df_br.drop(columns=['totalCasesMS','deathsMS','country','URL','notConfirmedByMS'])
 df_table = df_table.rename(columns={'id':'Local','totalCases':'Total','deaths':'Fatais'})
+trace_size = result.Confirmados*100
 
-fig = px.scatter_mapbox(result, lat="lat", lon="lon", hover_name="id", hover_data=['Confirmados','Mortes'],
-                        size=result.Confirmados,
-                        color_discrete_sequence=["fuchsia"], zoom=3, height=600)
+fig = go.Figure(go.Scattermapbox(
+    lat=result.lat, 
+    lon=result.lon, 
+    mode='markers',
+    marker=go.scattermapbox.Marker(
+            sizemode='area',
+            size=result.Confirmados,
+            sizeref=2
+        ),
+        
+    text=result.id,
+    customdata=result.Mortes,
+    hovertemplate="<b>%{text}</b><br><br>" +
+        "Confirmados: %{marker.size}<br>" +
+        "Óbitos: %{customdata}<br>" +
+        "<extra></extra>",   
+    ))
+fig.update_layout(mapbox=dict(
+    center=go.layout.mapbox.Center(
+            lat=-15,
+            lon=-47
+        ),
+        zoom=3,
+        ))                            
 fig.update_layout(mapbox_style="carto-positron")
+     
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 map_layout = html.Div(children=[
