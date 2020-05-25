@@ -19,7 +19,9 @@ result = pd.merge(result,gps_df,on='id')
 result = result[result.totalCases > 0]
 result = result.rename(columns={'totalCases':'Confirmados','deaths':'Mortes'})
 
-df_table = df_br.drop(columns=['totalCasesMS','deathsMS','country','URL','notConfirmedByMS'])
+df_table = df_br.drop(columns=['totalCasesMS','deathsMS','country','URL','notConfirmedByMS','deaths_per_100k_inhabitants',
+    'totalCases_per_100k_inhabitants','deaths_by_totalCases','recovered','suspects','tests',
+    'tests_per_100k_inhabitants','date','newCases','newDeaths'])
 df_table = df_table.rename(columns={'id':'Local','totalCases':'Total','deaths':'Fatais'})
 trace_size = result.Confirmados*100
 
@@ -30,7 +32,8 @@ fig = go.Figure(go.Scattermapbox(
     marker=go.scattermapbox.Marker(
             sizemode='area',
             size=result.Confirmados,
-            sizeref=2
+            sizeref=9,
+            sizemin=1
         ),
         
     text=result.id,

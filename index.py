@@ -9,16 +9,17 @@ from cidades import page_cidades,card_cidades,menu_cidades
 from mapa import map_layout
 from app import app
 
-
 links = dbc.Row(children=[
             dbc.Col(dbc.NavLink('Mapa', href='/',style={'color':'#fff'})),
-            dbc.Col(dbc.NavLink('Timeline', href='/timeline',style={'color':'#fff'})),
+            dbc.Col(dbc.NavLink('Timeline', href='/timeline',style={'color':'#fff'}),md=8),
+            dbc.Col(dbc.NavLink('Código fonte',href="https://github.com/lucs123/covid-brasil"))
 ],)
 
 navbar = dbc.Navbar(children=[
     dbc.Row([
         dbc.Col([dbc.NavbarBrand(children='Covid no Brasil')]),
     ]),
+    html.A(className="github-button",href="https://github.com/lucs123/covid-brasil"),
     dbc.NavbarToggler(id="navbar-toggler"),
     dbc.Collapse(links, id="navbar-collapse", navbar=True),
 ], color="dark",dark = True,className='col-md-12')
@@ -86,6 +87,7 @@ footer = dbc.Row([
 ])        
 #Layout
 app.layout = html.Div(children=[
+    html.Script('async defer',src="https://buttons.github.io/buttons.js"),
     dcc.Location(id='url'),
     html.Header(children=navbar),
     html.Br(),
