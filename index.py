@@ -10,9 +10,10 @@ from mapa import map_layout
 from app import app
 
 links = dbc.Row(children=[
-            dbc.Col(dbc.NavLink('Mapa', href='/',style={'color':'#fff'})),
-            dbc.Col(dbc.NavLink('Timeline', href='/timeline',style={'color':'#fff'}),md=8),
-            dbc.Col(dbc.NavLink('Código fonte',href="https://github.com/lucs123/covid-brasil"))
+            dbc.Col(dbc.NavLink('Mapa', href='/',style={'color':'#fff'}),md=2),
+            dbc.Col(dbc.NavLink('Timeline', href='/timeline',style={'color':'#fff'}),md=3),
+            dbc.Col(dbc.NavLink('Código fonte',href="https://github.com/lucs123/covid-brasil",
+                style={'color':'#fff'}),md=6)
 ],)
 
 navbar = dbc.Navbar(children=[
@@ -21,7 +22,7 @@ navbar = dbc.Navbar(children=[
     ]),
     html.A(className="github-button",href="https://github.com/lucs123/covid-brasil"),
     dbc.NavbarToggler(id="navbar-toggler"),
-    dbc.Collapse(links, id="navbar-collapse", navbar=True),
+    dbc.Collapse(links, id="navbar-collapse", navbar=True,style={'justify-content': 'end'}),
 ], color="dark",dark = True,className='col-md-12')
 
 graph_layout = html.Div([
