@@ -32,7 +32,7 @@ fig = go.Figure(go.Scattermapbox(
     marker=go.scattermapbox.Marker(
             sizemode='area',
             size=result.Confirmados,
-            sizeref=9,
+            sizeref=35,
             sizemin=1
         ),
         
